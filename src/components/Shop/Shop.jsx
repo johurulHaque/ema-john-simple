@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { addToDb, getShoppingCart } from '../../utilities/fakedb';
+import Cart from '../Cart/Cart';
 import Product from '../Product/Product';
 import './Shop.css'
 const Shop = () => {
@@ -8,21 +10,14 @@ const Shop = () => {
     const handleAddToCart = (product)=>{        
         const newCart = [...cart,product];    
         setCart(newCart);
+        addToDb(product.id);
     }
 
-    let item = 0;
-    let total = 0;
-    let shipping = 0;
-    for(const product of cart){
-        item += 1;
-        total += product.price;
-        shipping += product.shipping;
-        console.log(product);
-    }
-    const tax = (total * 7) / 100;
-    const grandTotal = total + shipping + tax;
-
-    console.log(item);
+    useEffect(()=>{
+        const storedCart = getShoppingCart();
+        console.log(storedCart);
+    },[]);
+   
 
     useEffect(()=>{
         fetch('products.json')
@@ -38,12 +33,7 @@ const Shop = () => {
                 }
             </div>
             <div className='cart-container'>
-                <h2>Order Summary</h2>
-                <p>Selected Item: {item}</p>
-                <p>Total : $ {total}</p>
-                <p>Total Shipping Charge: {shipping}</p>
-                <p>Tax: {tax}</p>
-                <h6>Grand Total: {grandTotal}</h6>
+                <Cart cart={cart}> </Cart>
             </div>
         </div>
     );
