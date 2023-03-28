@@ -5,9 +5,8 @@ const Shop = () => {
     const [products,setProducts] = useState([]);
     const [cart,setCart] = useState([]);
     
-    const handleAddToCart = (id)=>{        
-        const newProduct = products.find(p => p.id === id);  
-        const newCart = [...cart,newProduct];    
+    const handleAddToCart = (product)=>{        
+        const newCart = [...cart,product];    
         setCart(newCart);
     }
 
